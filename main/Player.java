@@ -1,7 +1,8 @@
 package main;
 import java.awt.Rectangle;
-import java.awt.Graphics2D;
+import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 
 public class Player {
     
@@ -20,19 +21,23 @@ public class Player {
     private int width;
     private int height;
 
-    public Player(GamePanel panel) {
+    public Player(int x, int y, int width, int height) {
         this.keyUp = false;
         this.keyDown = false;
         this.keyLeft = false;
         this.keyRight = false;
-        this.x = 0;
-        this.y = 0;
+        this.x = x;
+        this.y = y;
         this.dx = 0;
         this.dy = 0;
         // The dimensions of the player hitbox.
-        this.width = 25;
-        this.height = 25;
+        this.width = width;
+        this.height = height;
         this.hitbox = new Rectangle(this.x, this.y, this.width, this.height);
+    }
+
+    public void tick() {
+
     }
 
     public void move() {
@@ -115,10 +120,40 @@ public class Player {
         }
     }
 
-    public void draw(Graphics2D g2d) {
-        g2d.setColor(Color.WHITE);
-        g2d.fillRect(this.x, this.y, this.width, this.height);
-        g2d.setColor(Color.BLUE);
-        g2d.drawRect(this.x, this.y, this.width, this.height);
+    public void draw(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(this.x, this.y, this.width, this.height);
+        g.setColor(Color.BLUE);
+        g.drawRect(this.x, this.y, this.width, this.height);
+    }
+
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyChar() == 'w') {
+            this.keyUp = true;
+        }
+        if (e.getKeyChar() == 'a') {
+            this.keyLeft = true;
+        }
+        if (e.getKeyChar() == 's') {
+            this.keyDown = true;
+        }
+        if (e.getKeyChar() == 'd') {
+            this.keyRight = true;
+        }
+    }
+
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyChar() == 'w') {
+            this.keyUp = false;
+        }
+        if (e.getKeyChar() == 'a') {
+            this.keyLeft = false;
+        }
+        if (e.getKeyChar() == 's') {
+            this.keyDown = false;
+        }
+        if (e.getKeyChar() == 'd') {
+            this.keyRight = false;
+        }
     }
 }

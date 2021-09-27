@@ -4,15 +4,16 @@ import java.awt.event.KeyEvent;
 import java.util.Stack;
 
 public class GameStateManager {
-    
-    private Stack<GameState> state;
+    // The stack is required to be accessible by the GameState's child instances.
+    public Stack<GameState> state;
+
     public GameStateManager() {
         this.state = new Stack<GameState>();
         this.state.push(new MenuState(this));
     }
 
-    public void tick() {
-        this.state.peek().tick();
+    public void next() {
+        this.state.peek().next();
     }
 
     public void draw(Graphics g) {

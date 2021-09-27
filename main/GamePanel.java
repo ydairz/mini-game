@@ -13,7 +13,6 @@ public class GamePanel extends JPanel implements Runnable {
     private int panelWidth;
     private int panelHeight;
     private GameStateManager gsm;
-    private Player player;
 
     public GamePanel(int panelWidth, int panelHeight) {
         this.setLocation(0, 0);
@@ -21,9 +20,6 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
         this.panelWidth = panelWidth;
         this.panelHeight = panelHeight;
-        // Creating the player object. GamePanel object is passed on to ensure that collision detection works as intended.
-        // The player object must know when it is about to intersect with the walls.
-        this.player = new Player(this);
         this.gsm = new GameStateManager();
         if (this.thread == null) {
             this.thread = new Thread(this);
@@ -39,9 +35,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Game loop...
         while(this.running) {
             start = System.nanoTime();
-            // The player's position is to be update every frame. If the player's position has changed,
-            // The position of the player model is updated.
-            this.player.move();
+            next();
             repaint();
             elapsed = System.nanoTime() - start;
             wait = this.targetTime - (elapsed / 1000000);
@@ -59,8 +53,8 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     // ???
-    public void tick() {
-        this.gsm.tick();
+    public void next() {
+        this.gsm.next();
     }
 
     public void paintComponent(Graphics g) {

@@ -18,12 +18,7 @@ public class MenuState extends GameState {
     }
 
     @Override
-    public void init() {
-    
-    }
-
-    @Override
-    public void tick() {
+    public void next() {
 
     }
 
@@ -32,8 +27,6 @@ public class MenuState extends GameState {
         // Creates a light blue background.
         g.setColor(new Color(150, 225, 250));
         g.fillRect(0, 0, 800, 600);
-        g.setColor(Color.BLACK);
-        g.drawLine(400, 0, 400, 600);
         // Each option is defaulted to a specific size. The selected option will be coloured green,
         // whereas the remaining options will remain black.
         g.setFont(new Font("Arial", Font.PLAIN, 64));
@@ -82,6 +75,7 @@ public class MenuState extends GameState {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (this.currentOption == 0) {
                 // Start the game.
+                gsm.state.push(new RoomOne(gsm));
             }
             else if (this.currentOption == 1) {
                 // Display help screen.
