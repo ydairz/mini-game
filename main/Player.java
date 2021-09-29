@@ -6,20 +6,23 @@ import java.awt.event.KeyEvent;
 
 public class Player {
     
-    public boolean keyUp;
-    public boolean keyDown;
-    public boolean keyLeft;
-    public boolean keyRight;
+    private boolean keyUp;
+    private boolean keyDown;
+    private boolean keyLeft;
+    private boolean keyRight;
     // The position of the player relative to the GamePanel.
-    private int x;
-    private int y;
+    public int x;
+    public int y;
     // Changes in horizontal and vertical positions (horizontal and vertical speed).
-    private int dx;
-    private int dy;
+    public int dx;
+    public int dy;
     // Player hitbox variables - hitbox is used for collision detection.
-    private Rectangle hitbox;
+    public Rectangle hitbox;
+    // The player's dimensions (model and hitbox dimensions).
     private int width;
     private int height;
+    // Player entities.
+    private int hitpoints;
 
     public Player(int x, int y, int width, int height) {
         this.keyUp = false;
@@ -34,6 +37,8 @@ public class Player {
         this.width = width;
         this.height = height;
         this.hitbox = new Rectangle(this.x, this.y, this.width, this.height);
+        // Player entities.
+        this.hitpoints = 100;
     }
 
     public void tick() {
@@ -121,10 +126,15 @@ public class Player {
     }
 
     public void draw(Graphics g) {
+        // Draws the player model.
         g.setColor(Color.WHITE);
         g.fillRect(this.x, this.y, this.width, this.height);
         g.setColor(Color.BLUE);
         g.drawRect(this.x, this.y, this.width, this.height);
+        // Draws the health bar (representing hitpoints).
+        g.drawRect(this.x, this.y-7, this.width, 3);
+        g.setColor(Color.GREEN);
+        g.fillRect(this.x, this.y-7, this.hitpoints/4, 3);
     }
 
     public void keyPressed(KeyEvent e) {

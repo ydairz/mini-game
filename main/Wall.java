@@ -9,7 +9,8 @@ public class Wall {
     private int x;
     private int y;
     // Wall's hitbox variables - hitbox is used for collision detection.
-    private Rectangle hitbox;
+    public Rectangle hitbox;
+    // The dimensions of the wall.
     private int width;
     private int height;
     
