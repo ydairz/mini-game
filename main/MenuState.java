@@ -75,7 +75,23 @@ public class MenuState extends GameState {
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             if (this.currentOption == 0) {
                 // Start the game.
-                gsm.state.push(new RoomOne(gsm));
+                Player player = new Player(25, 25, 25, 25);
+                Key opener = new Key(88, 150, 25, 25);
+                Door door = new Door(325, 300, 50, 75);
+                Stair stair = new Stair(25, 468, 50, 50);
+                int wallDimensions[][] = new int[][] {
+                    {0, 75, 250, 50},
+                    {200, 125, 50, 175},
+                    {325, 0, 50, 300},
+                    {0, 375, 700, 50},
+                    {75, 200, 50, 100},
+                    {450, 75, 250, 50},
+                    {450, 125, 50, 250},
+                    {575, 200, 225, 50},
+                    {650, 512, 50, 50},
+                    {375, 425, 50, 50}
+                };
+                gsm.state.push(new RoomOne(gsm, player, opener, door, stair, wallDimensions));
             }
             else if (this.currentOption == 1) {
                 // Display help screen.
