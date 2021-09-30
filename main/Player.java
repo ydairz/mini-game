@@ -22,7 +22,8 @@ public class Player {
     private int width;
     private int height;
     // Player entities.
-    private int hitpoints;
+    public int hitpoints;
+    public boolean slow;
 
     public Player(int x, int y, int width, int height) {
         this.keyUp = false;
@@ -39,6 +40,7 @@ public class Player {
         this.hitbox = new Rectangle(this.x, this.y, this.width, this.height);
         // Player entities.
         this.hitpoints = 100;
+        this.slow = false;
     }
 
     public void tick() {
@@ -84,17 +86,33 @@ public class Player {
             this.dy = 0;
         }
         // The player cannot go beyond the maximum velocity threshold.
-        if (this.dx > 5) {
-            this.dx = 5;
+        if (this.slow == false) {
+            if (this.dx > 5) {
+                this.dx = 5;
+            }
+            else if (this.dx < -5) {
+                this.dx = -5;
+            }
+            if (this.dy > 5) {
+                this.dy = 5;
+            }
+            else if (this.dy < -5) {
+                this.dy = -5;
+            }
         }
-        else if (this.dx < -5) {
-            this.dx = -5;
-        }
-        if (this.dy > 5) {
-            this.dy = 5;
-        }
-        else if (this.dy < -5) {
-            this.dy = -5;
+        else {
+            if (this.dx > 2) {
+                this.dx = 2;
+            }
+            else if (this.dx < -2) {
+                this.dx = -2;
+            }
+            if (this.dy > 2) {
+                this.dy = 2;
+            }
+            else if (this.dy < -2) {
+                this.dy = -2;
+            }
         }
         // Updating the position of the player.
         this.x += this.dx;

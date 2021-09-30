@@ -6,34 +6,43 @@ import java.io.IOException;
 import java.io.File;
 import javax.imageio.ImageIO;
 
-public class RoomOne extends GameState {
+public class RoomTwo extends GameState {
 
     private Player player;
-    private Wall[] wall = new Wall[10];
+    private Wall[] wall = new Wall[9];
+    private Lava[] lava = new Lava[6];
     private Key key;
     private Door door;
     private Stair stair;
+    // Used to alternate between the lava's operative state (alternate between active and inactive).
+    private int count;
 
-    public RoomOne(GameStateManager gsm) {
+    public RoomTwo(GameStateManager gsm) {
         super(gsm);
-        this.player = new Player(25, 25, 25, 25);
+        this.player = new Player(25, 468, 25, 25);
         // Generate walls.
-        this.wall[0] = new Wall(0, 75, 250, 50);
-        this.wall[1] = new Wall(200, 125, 50, 175);
-        this.wall[2] = new Wall(325, 0, 50, 300);
-        this.wall[3] = new Wall(0, 375, 700, 50);
-        this.wall[4] = new Wall(75, 200, 50, 100);
-        this.wall[5] = new Wall(450, 75, 250, 50);
-        this.wall[6] = new Wall(450, 125, 50, 250);
-        this.wall[7] = new Wall(575, 200, 225, 50);
-        this.wall[8] = new Wall(650, 512, 50, 50);
-        this.wall[9] = new Wall(375, 425, 50, 50);
+        this.wall[0] = new Wall(0, 375, 275, 50);
+        this.wall[1] = new Wall(355, 75, 50, 487);
+        this.wall[2] = new Wall(225, 75, 50, 300);
+        this.wall[3] = new Wall(75, 75, 150, 50);
+        this.wall[4] = new Wall(75, 125, 50, 150);
+        this.wall[5] = new Wall(405, 75, 155, 50);
+        this.wall[6] = new Wall(635, 0, 50, 487);
+        this.wall[7] = new Wall(480, 200, 155, 50);
+        this.wall[8] = new Wall(405, 437, 155, 50);
+        // Generate lava.
+        this.lava[0] = new Lava(275, 375, 80, 50);
+        this.lava[1] = new Lava(275, 225, 80, 50);
+        this.lava[2] = new Lava(275, 75, 80, 50);
+        this.lava[3] = new Lava(560, 75, 75, 50);
+        this.lava[4] = new Lava(405, 200, 75, 50);
+        this.lava[5] = new Lava(560, 437, 75, 50);
         // Generate key.
-        this.key = new Key(88, 150, 25, 25);
+        this.key = new Key(162, 150, 25, 25);
         // Generate door.
-        this.door = new Door(325, 300, 50, 75);
+        this.door = new Door(355, 0, 50, 75);
         //Generator stair.
-        this.stair = new Stair(25, 468, 50, 50);
+        this.stair = new Stair(710, 25, 50, 50);
     }
 
     @Override
@@ -48,6 +57,20 @@ public class RoomOne extends GameState {
             playerDoorCollision();
         }
         playerStairCollision();
+        playerLavaCollision();
+        // Lava pits will periodically (every minute) appear and then disappear.
+        if (this.count == 60) {
+            for (int i = 0; i < this.lava.length; i++) {
+                if (this.lava[i].active) {
+                    this.lava[i].active = false;
+                }
+                else {
+                    this.lava[i].active = true;
+                }
+            }
+            this.count = 0;
+        }
+        this.count++;
     }
 
     private static void playerWallCollision(Player player, Wall[] wall) {
@@ -131,7 +154,26 @@ public class RoomOne extends GameState {
             // Remove the current level from the stack.
             gsm.state.pop();
             // Add the next level to the stack.
-            gsm.state.push(new RoomTwo(gsm));
+            gsm.state.push(new FinalState(gsm));
+        }
+    }
+
+    private void playerLavaCollision() {
+        boolean onLava = false;
+        // Collision detection (only vertical collision) - The player loses health, if on active lava pits.
+        for (Lava block : this.lava) {
+            // Collision detected - player loses health, whilst on top of lava pit.
+            if (this.player.hitbox.intersects(block.hitbox) && block.active == true) {
+                this.player.hitpoints -= 1;
+                onLava = true;
+            }
+        }
+        // The player also experiences slowness, whilst on top of any lava pits.
+        if (onLava) {
+            this.player.slow = true;
+        }
+        else {
+            this.player.slow = false;
         }
     }
 
@@ -143,6 +185,13 @@ public class RoomOne extends GameState {
         // Draws the walls.
         for (int i = 0; i < this.wall.length; i++) {
             this.wall[i].draw(g);
+        }
+        // Draws the lava.
+        for (int j = 0; j < this.lava.length; j++) {
+            // Lava pits periodically change from active to inactive; pits that are inactive temporarily disappear, opening up a path.
+            if (this.lava[j].active == true) {
+                this.lava[j].draw(g);
+            }
         }
         // Draw key.
         if (this.key != null) {

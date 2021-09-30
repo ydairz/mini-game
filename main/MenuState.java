@@ -37,7 +37,7 @@ public class MenuState extends GameState {
             else {
                 g.setColor(Color.BLACK);
             }
-            g.drawString(option[i], 330, 200+(i*80));
+            g.drawString(this.option[i], 330, 200+(i*80));
         }
     }
 
