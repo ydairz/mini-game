@@ -32,7 +32,7 @@ public class RoomTwo extends LevelState {
 
     private void playerLavaCollision() {
         boolean onLava = false;
-        // Collision detection (only vertical collision) - The player loses health, if on active lava pits.
+        // Collision detection - the player loses health, if on active lava pits.
         for (Lava block : this.lava) {
             // Collision detected - player loses health, whilst on top of lava pit.
             if (super.player.hitbox.intersects(block.hitbox) && block.active == true) {
@@ -71,8 +71,19 @@ public class RoomTwo extends LevelState {
         if (super.player.hitbox.intersects(super.stair.hitbox)) {
             // Remove the current level from the stack.
             super.gsm.state.pop();
-            // Add the victory menu to the stack.
-            super.gsm.state.push(new FinalState(super.gsm));
+            // Add the next level to the stack.
+            Key key = new Key(25, 370, 25, 25);
+            Door door = new Door(200, 515, 50, 537);
+            Stair stair = new Stair(686, 462, 50, 50);
+            int[][] wallDimensions = new int[][] {
+                {100, 100, 686, 65},
+                {0, 225, 686, 65},
+                {200, 350, 586, 65},
+                {200, 415, 50, 100},
+                {375, 462, 50, 100},
+                {550, 415, 50, 100}
+            };
+            super.gsm.state.push(new RoomThree(super.gsm, super.player, key, door, stair, wallDimensions));
         }
     }
 

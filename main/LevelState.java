@@ -12,7 +12,7 @@ public class LevelState extends GameState {
     private Key key;
     private Door door;
     protected Stair stair;
-    private Wall[] wall;
+    protected Wall[] wall;
 
     public LevelState(GameStateManager gsm, Player player, Key key, Door door, Stair stair, int[][] wallDimensions) {
         super(gsm);
@@ -28,6 +28,7 @@ public class LevelState extends GameState {
 
     @Override
     public void next() {
+        // Moves the player model (updates the player model according to its movement).
         this.player.move();
         playerWallCollision();
         // Collision detection between the player and the key is only necessary, if the player hasn't yet picked up the key.

@@ -22,6 +22,18 @@ public class Entity {
         this.hitbox = new Rectangle(this.x, this.y, this.width, this.height);
     }
 
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public void updateX(int x) {
+        this.x += x;
+    }
+
     public void draw(Graphics g, Color primary, Color secondary) {
         g.setColor(primary);
         g.fillRect(this.x, this.y, this.width, this.height);
