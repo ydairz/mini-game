@@ -50,6 +50,7 @@ public class PauseState extends MenuState {
             }
             else if (this.currentOption == 1) {
                 // Display help screen.
+                gsm.state.push(new Help(gsm));
             }
             else {
                 // Quits to the main menu (progress is not saved), by removing the pauseState at the top of the stack.

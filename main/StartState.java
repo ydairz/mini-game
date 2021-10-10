@@ -60,6 +60,7 @@ public class StartState extends MenuState {
             }
             else if (this.currentOption == 1) {
                 // Display help screen.
+                gsm.state.push(new Help(gsm));
             }
             else {
                 // Terminates the game
